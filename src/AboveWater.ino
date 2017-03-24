@@ -138,17 +138,15 @@ void loop() {
   Then it gets the date and time from the DeadOn RTC, writes the current temperature value
   to the SD card, and sends the gathered data (including the new temperature) to the Huzzah.
   */
-if(!Serial.available()){
+while(!Serial.available()){
    delay(1000);
- }
- else{
-  if ((char)Serial.read() == 'd') {
-    struct configs configuration = setConfigVariables();
-    askForTemperature(configuration.number);
-    String temperature = watchForTemperatureResults();
-    String data = createDataString(temperature, &configuration);
-    writeDataToDisk(configuration.file, data);
-    sendDataToClient(data, configuration.values);
-    }
-  }
+}
+if ((char)Serial.read() == 'd') {
+  struct configs configuration = setConfigVariables();
+  askForTemperature(configuration.number);
+  String temperature = watchForTemperatureResults();
+  String data = createDataString(temperature, &configuration);
+  writeDataToDisk(configuration.file, data);
+  sendDataToClient(data, configuration.values);
+}
 }
